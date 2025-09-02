@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out code...'
-                checkout scm
+                git branch: 'main', credentialsId: 'mygithubcredentials', url: 'https://github.com/ManojkumarKamaraj/jenkins-test.git'
             }
         }
 

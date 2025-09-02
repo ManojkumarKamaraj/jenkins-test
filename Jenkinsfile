@@ -1,39 +1,48 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'myapp:latest'
+    }
+
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                git url: 'https://github.com/ManojkumarKamaraj/jenkins-test.git'
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building the project...'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    docker.build("html-app")
-                }
+                echo 'Building Docker image...'
+                sh "docker build -t $DOCKER_IMAGE ."
             }
         }
 
-        stage('Run Container') {
-            steps {
-                script {
-                    // Stop and remove existing container if it exists
-                    sh "docker rm -f html-container || true"
-                    // Run the container on port 8080
-                    sh "docker run -d --name html-container -p 8080:80 html-app"
-                }
-            }
-        }
     }
 
     post {
+        always {
+            echo 'Cleaning up...'
+        }
         success {
-            echo "App deployed successfully at http://localhost:8080"
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo "Build or deploy failed"
+            echo 'Pipeline failed.'
         }
     }
 }

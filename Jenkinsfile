@@ -30,7 +30,7 @@ pipeline {
 
     post {
         success {
-            echo "App deployed successfully at http://<jenkins-host>:8080"
+            echo "App deployed successfully at http://localhost:8080"
         }
         failure {
             echo "Build or deploy failed"

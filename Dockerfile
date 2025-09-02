@@ -1,6 +1,6 @@
 FROM nginx:alpine
 
-WORKDIR /Docker_html
+WORKDIR /
  
 COPY index.html .
 
